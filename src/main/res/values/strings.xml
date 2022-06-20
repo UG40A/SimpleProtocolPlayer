@@ -33,6 +33,8 @@
     <item>24000</item>
     <item>44100 (Default)</item>
     <item>48000</item>
+    <item>96000</item>
+    <item>192000</item>
   </string-array>
   <string-array name="stereo">
     <item>Mono</item>

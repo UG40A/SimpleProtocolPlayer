@@ -94,7 +94,8 @@ public class WorkerThreadPair {
               .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
               .build())
           .setAudioFormat(new AudioFormat.Builder()
-              .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+              .setEncoding(AudioFormat.
+                          ENCODING_PCM_FLOAT)
               .setSampleRate(sampleRate)
               .setChannelMask(channelMask)
               .build())
@@ -108,7 +109,7 @@ public class WorkerThreadPair {
 
     } else {
       return new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate,
-          channelMask, AudioFormat.ENCODING_PCM_16BIT, audioTrackMinBuffer,
+          channelMask, AudioFormat.ENCODING_PCM_FLOAT, audioTrackMinBuffer,
           AudioTrack.MODE_STREAM);
     }
   }
@@ -116,13 +117,12 @@ public class WorkerThreadPair {
   static int calcBytesPerAudioPacket(int sampleRate, boolean stereo,
       int requestedBufferMs) {
 
-    // Assume 16 bits per sample
-    int bytesPerSecond = sampleRate * 2;
+    float bytesPerSecond = sampleRate * 4;
     if (stereo) {
-      bytesPerSecond *= 2;
+      bytesPerSecond *= 4;
     }
 
-    int result = (bytesPerSecond * requestedBufferMs) / 1000;
+    float result = (bytesPerSecond * requestedBufferMs) / 1000;
 
     if (stereo) {
       result = (result + 3) & ~0x3;
@@ -136,9 +136,9 @@ public class WorkerThreadPair {
     return result;
   }
 
-  static int calcMinBytesPerAudioPacket(boolean stereo,
+  static float calcMinBytesPerAudioPacket(boolean stereo,
       int audioTrackMinBuffer) {
-    int bytesPerAudioPacket;
+    float bytesPerAudioPacket;
 
     if (stereo) {
       bytesPerAudioPacket = (audioTrackMinBuffer + 3) & ~0x3;

@@ -51,9 +51,9 @@ public class WorkerThreadPair {
       sampleRate = MusicService.DEFAULT_SAMPLE_RATE;
     }
 
-    int audioTrackMinBuffer = AudioTrack
+    float audioTrackMinBuffer = AudioTrack
         .getMinBufferSize(sampleRate, channelMask,
-            AudioFormat.ENCODING_PCM_16BIT);
+            AudioFormat.ENCODING_PCM_FLOAT);
     Log.d(TAG, "audioTrackMinBuffer:" + audioTrackMinBuffer);
 
     if (useMinBuffer) {
@@ -83,7 +83,7 @@ public class WorkerThreadPair {
   }
 
   static AudioTrack buildAudioTrack(int sampleRate, int channelMask,
-      int audioTrackMinBuffer, boolean usePerformanceMode) {
+      float audioTrackMinBuffer, boolean usePerformanceMode) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       // PERFORMANCE_MODE_LOW_LATENCY was only added in O (API 26).
       // AudioManager.STREAM_MUSIC has been deprecated in favor of
@@ -137,7 +137,7 @@ public class WorkerThreadPair {
   }
 
   static float calcMinBytesPerAudioPacket(boolean stereo,
-      int audioTrackMinBuffer) {
+      float audioTrackMinBuffer) {
     float bytesPerAudioPacket;
 
     if (stereo) {

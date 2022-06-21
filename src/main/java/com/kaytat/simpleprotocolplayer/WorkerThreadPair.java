@@ -114,7 +114,7 @@ public class WorkerThreadPair {
     }
   }
 
-  static int calcBytesPerAudioPacket(int sampleRate, boolean stereo,
+  static float calcBytesPerAudioPacket(int sampleRate, boolean stereo,
       int requestedBufferMs) {
 
     float bytesPerSecond = sampleRate * 4;
@@ -156,7 +156,7 @@ public class WorkerThreadPair {
   static public final int NUM_PACKETS = 3;
 
   // The amount of data to read from the network before sending to AudioTrack
-  final int bytesPerAudioPacket;
+  final float bytesPerAudioPacket;
 
   final ArrayBlockingQueue<byte[]> dataQueue =
       new ArrayBlockingQueue<>(NUM_PACKETS);
